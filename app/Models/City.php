@@ -12,10 +12,7 @@ class City extends Model
 
     public $timestamps = false;
     protected $fillable = ['name', 'country', 'lat','long'];
-    use SoftDeletes;
 
-
-    protected $dates = ['deleted_at'];
 
     public function weather(){
         return $this->hasMany(Weather::class);
