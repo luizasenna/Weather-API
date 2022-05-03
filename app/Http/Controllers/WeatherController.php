@@ -3,18 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreRequest;
 use App\Models\Weather;
 
 class WeatherController extends Controller
 {
 
     public function index(){
-
         $weather = Weather::all();
         return response()->json($weather);
 
     }
-    public function store(Request $request){
+    public function store(StoreRequest $request){
+
         return response()->json(
             Weather::create($request->all()),
             status: 201
