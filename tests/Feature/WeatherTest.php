@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use Carbon\Carbon;
 
 class WeatherTest extends TestCase
 {
@@ -18,6 +19,24 @@ class WeatherTest extends TestCase
         $response = $this->get('/api/weather');
 
         $response->assertStatus(200);
+    }
+
+    public function testWeatherIndexWithDate()
+    {
+        $response = $this->get('/api/weather?dt='.now()->format('Y-m-d'));
+        $response->assertStatus(200);
+    }
+
+    public function testWeatherDateFuture()
+    {
+        $dt = Carbon::now()->addDays(5)->format('Y-m-d');
+
+        $response = $this->json('GET', '/api/weather', ['dt' => $dt]);
+
+        $response->assertStatus(404)
+            ->assertJsonFragment([
+                'error' => "Date not found, try another one.",
+            ]);
     }
 
     public function testRequiredFieldsToPost()

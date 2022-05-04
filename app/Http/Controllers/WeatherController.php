@@ -15,11 +15,6 @@ use Carbon\Carbon;
 class WeatherController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->idApi = env('WEATHER_ID');
-    }
-
     public function index(Request $request){
 
         If(empty($request->dt)) {
@@ -85,17 +80,13 @@ class WeatherController extends Controller
         return response()->json('Removed', status: 204);
     }
 
-    public function checkIfExists($date){
-        $weather = Weather::where('created_at', '=', '$date');
-
-    }
-
     public static function currentFromAPI(){
 
         $cities = City::all();
         try {
             foreach($cities as $city){
-                $url = 'https://api.openweathermap.org/data/2.5/weather?lat='.$city->lat.'&lon='.$city->lon.'&appid=3afc7a17d7a1ee160a9b766dfbcfb83b';
+                $url = 'https://api.openweathermap.org/data/2.5/weather?lat='.$city->lat.'&lon='.$city->lon.'&appid='.env('WEATHER_ID');
+
                 $response = Http::get($url);
                 $capture = json_decode($response->body());
                 $weather = Weather::create(
@@ -110,7 +101,6 @@ class WeatherController extends Controller
                         'humidity' => $capture->main->humidity,
                         'dt' => $capture->dt
                         ));
-
             }
           } catch(\Exception $e){
                 return $e->getMessage();
@@ -123,16 +113,13 @@ class WeatherController extends Controller
         $dateTime = new DateTime($dt);
         $timestamp = $dateTime->format('U');
 
-
-
         try {
             foreach($cities as $city){
-                $url = 'https://api.openweathermap.org/data/2.5/onecall/timemachine?lat='.$city->lat.'&lon='.$city->lon.'&dt='.$timestamp.'&appid=3afc7a17d7a1ee160a9b766dfbcfb83b';
+                $url = 'https://api.openweathermap.org/data/2.5/onecall/timemachine?lat='.$city->lat.'&lon='.$city->lon.'&dt='.$timestamp.'&appid='.env('WEATHER_ID');
                 $response = Http::get($url);
 
                 if($response->status() == '200') {
                     $capture = json_decode($response->body());
-
 
                     $newdt = Carbon::parse($capture->current->dt)->format('Y-m-d H:i:s');
 
