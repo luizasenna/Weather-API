@@ -21,7 +21,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/cities', [CitiesController::class, 'index']);
+Route::get('/try', [WeatherController::class, 'fromAPI']);
 
+Route::get('popul', function () {
+    dispatch(new \App\Jobs\StoreDataJob());
+});
 
 Route::group(['prefix' => 'weather'], function() {
     Route::get('', [WeatherController::class, 'index']);
@@ -29,6 +33,8 @@ Route::group(['prefix' => 'weather'], function() {
     Route::get('{id}', [WeatherController::class, 'show']);
     Route::put('{id}', [WeatherController::class, 'update']);
     Route::delete('{id}', [WeatherController::class, 'destroy']);
+
+
 
 });
 

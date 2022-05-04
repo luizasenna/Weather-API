@@ -17,3 +17,7 @@ use Illuminate\Support\Facades\Artisan;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
+
+Artisan::command('populate', function () {
+    $this->comment(\App\Jobs\StoreDataJob::dispatch());
+})->purpose('Populate our API with external data 4 times a day');
