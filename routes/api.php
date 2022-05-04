@@ -16,25 +16,15 @@ use App\Http\Controllers\WeatherController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
 Route::get('/cities', [CitiesController::class, 'index']);
-Route::get('/try', [WeatherController::class, 'fromAPI']);
+Route::get('/try', [WeatherController::class, 'currentFromAPI']);
+Route::get('/old', [WeatherController::class, 'otherDateFromAPI']);
 
 Route::get('popul', function () {
-    dispatch(new \App\Jobs\StoreDataJob());
+    dispatch(new \App\Jobs\StoreCurrentDataJob());
 });
 
-Route::group(['prefix' => 'weather'], function() {
-    Route::get('', [WeatherController::class, 'index']);
-    Route::post('', [WeatherController::class, 'store']);
-    Route::get('{id}', [WeatherController::class, 'show']);
-    Route::put('{id}', [WeatherController::class, 'update']);
-    Route::delete('{id}', [WeatherController::class, 'destroy']);
+Route::apiResource('weather', WeatherController::class);
 
-
-
-});
 

@@ -11,7 +11,7 @@ class Weather extends Model
     use HasFactory;
 
     public $timestamps = true;
-    protected $fillable = ['city_id', 'main', 'description','temp', 'feels_like',
+    protected $fillable = ['city_id', 'dt','main', 'description','temp', 'feels_like',
         'temp_min', 'temp_max', 'pressure', 'humidity'];
     use SoftDeletes;
 

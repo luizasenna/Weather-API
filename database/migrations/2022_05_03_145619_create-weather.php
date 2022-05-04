@@ -15,8 +15,9 @@ return new class extends Migration
     {
         Schema::create('weather', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+
             $table->integer("city_id");
+            $table->time("dt");
             $table->string("main");
             $table->string("description");
             $table->string("temp");
@@ -25,6 +26,7 @@ return new class extends Migration
             $table->string("temp_max");
             $table->string("pressure");
             $table->string("humidity");
+            $table->timestamps();
 
             $table->foreign('city_id')->references('id')->on('cities');
 

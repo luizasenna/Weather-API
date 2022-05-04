@@ -18,6 +18,10 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-Artisan::command('populate', function () {
-    $this->comment(\App\Jobs\StoreDataJob::dispatch());
+Artisan::command('current', function () {
+    $this->comment(\App\Jobs\StoreCurrentDataJob::dispatch());
 })->purpose('Populate our API with external data 4 times a day');
+
+Artisan::command('populate', function () {
+    $this->comment(\App\Jobs\StoreOtherDataJob::dispatch());
+})->purpose('Populate our API with another data inputted');
